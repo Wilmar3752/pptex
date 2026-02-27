@@ -179,6 +179,57 @@ pptex/
 
 ---
 
+## OS Compatibility
+
+| OS | Terminal | Works |
+|---|---|---|
+| **macOS** | Terminal, iTerm2 | Yes |
+| **Linux** | Any | Yes |
+| **Windows — WSL2** | WSL terminal | Yes — recommended for Windows |
+| **Windows — Git Bash** | Git Bash | Yes |
+| **Windows — PowerShell / CMD** | — | No — use WSL2 or Git Bash |
+
+### macOS
+
+```bash
+chmod +x pptex
+./pptex build
+```
+
+### Linux
+
+```bash
+chmod +x pptex
+./pptex build
+```
+
+### Windows (WSL2) — recommended
+
+The most robust option. Docker Desktop integrates natively with WSL2 and the experience is identical to Linux.
+
+1. Enable WSL2: `wsl --install` (restart required)
+2. Install [Docker Desktop](https://www.docker.com/products/docker-desktop) and enable **Settings → General → Use the WSL 2 based engine**
+3. Open your WSL terminal:
+
+```bash
+git clone https://github.com/yourusername/pptex.git
+cd pptex
+chmod +x pptex
+./pptex build
+```
+
+### Windows (Git Bash)
+
+Works with [Git for Windows](https://git-scm.com/download/win). The script sets `MSYS_NO_PATHCONV=1` automatically to prevent Git Bash from mangling Docker volume paths.
+
+```bash
+git clone https://github.com/yourusername/pptex.git
+cd pptex
+./pptex build
+```
+
+---
+
 ## Documentation
 
 - [Installation Guide](docs/installation.md) — Docker setup, troubleshooting
