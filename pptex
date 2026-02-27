@@ -94,19 +94,18 @@ resolve_project() {
     echo "$main"
 }
 
-# Parse positional args: returns either a resolved file path, or sets vars via
-# globals. Accepts:
-#   ("slides", "congreso")   → resolve project
+# Parse positional args and print the resolved .tex file path to stdout.
+# Accepts:
+#   ("slides", "congreso")        → resolve project shorthand
 #   ("slides/congreso/main.tex")  → use directly
 resolve_file() {
-    local -n _out_file=$1; shift   # nameref for return value
     local positional=("$@")
 
     if [[ ${#positional[@]} -eq 2 ]]; then
-        _out_file="$(resolve_project "${positional[0]}" "${positional[1]}")"
+        resolve_project "${positional[0]}" "${positional[1]}"
     elif [[ ${#positional[@]} -eq 1 ]]; then
-        _out_file="${positional[0]}"
-        [[ ! -f "$_out_file" ]] && error "File not found: ${_out_file}"
+        [[ ! -f "${positional[0]}" ]] && error "File not found: ${positional[0]}"
+        echo "${positional[0]}"
     else
         error "Specify a project or file.\n  Examples:\n    pptex compile slides congreso\n    pptex compile slides/congreso/main.tex"
     fi
@@ -131,7 +130,7 @@ cmd_compile() {
     done
 
     local file
-    resolve_file file "${positional[@]}"
+    file="$(resolve_file "${positional[@]}")"
 
     local abs_file
     abs_file="$(cd "$(dirname "$file")" && pwd)/$(basename "$file")"
@@ -188,7 +187,7 @@ cmd_watch() {
     done
 
     local file
-    resolve_file file "${positional[@]}"
+    file="$(resolve_file "${positional[@]}")"
 
     local abs_file
     abs_file="$(cd "$(dirname "$file")" && pwd)/$(basename "$file")"
