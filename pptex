@@ -145,7 +145,7 @@ cmd_compile() {
     local out_dir="${output_dir:-$src_dir}"
     [[ "$output_dir" ]] && mkdir -p "$out_dir" && out_dir="$(cd "$out_dir" && pwd)"
 
-    local latexmk_args=("-${engine}" "-interaction=nonstopmode" "-file-line-error" "-synctex=1")
+    local latexmk_args=("-${engine}" "-interaction=nonstopmode" "-file-line-error" "-synctex=1" "-f")
     [[ "$use_biber" == true ]] && latexmk_args+=("-biber")
     [[ "$out_dir" != "$src_dir" ]] && latexmk_args+=("-outdir=/out")
 
