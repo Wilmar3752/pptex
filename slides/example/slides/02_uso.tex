@@ -1,0 +1,126 @@
+% ── Sección: Uso ──────────────────────────────────────────────────────────────
+\section{Uso}
+
+% ── Flujo de trabajo ──────────────────────────────────────────────────────────
+\begin{frame}[fragile]{Flujo de trabajo completo}
+  \begin{center}
+    \begin{tikzpicture}[
+      node distance=2.6cm,
+      step/.style={rectangle, draw, rounded corners=5pt,
+                   minimum width=2.8cm, minimum height=1cm,
+                   fill=pptexBlue!15, font=\small\bfseries},
+      lbl/.style={font=\tiny\ttfamily, text=gray, below=2pt},
+    ]
+      \node[step] (new)  {new};
+      \node[step] (edit) [right of=new]    {editar};
+      \node[step] (comp) [right of=edit]   {compile};
+      \node[step] (pdf)  [right of=comp]   {PDF};
+
+      \draw[->, thick] (new)  -- (edit);
+      \draw[->, thick] (edit) -- (comp);
+      \draw[->, thick] (comp) -- (pdf);
+      \draw[->, thick, dashed, bend right=35] (comp) to node[below, font=\tiny]{watch} (edit);
+
+      \node[lbl] at (new.south)  {pptex new};
+      \node[lbl] at (comp.south) {pptex compile};
+    \end{tikzpicture}
+  \end{center}
+
+  \vspace{0.5em}
+  El modo \texttt{watch} recompila automaticamente cada vez que guardas el archivo.
+\end{frame}
+
+% ── Proyectos ─────────────────────────────────────────────────────────────────
+\begin{frame}[fragile]{Crear y organizar proyectos}
+  \textbf{Diapositivas:}
+  \begin{lstlisting}[language=bash]
+./pptex new slides congreso
+./pptex new slides curso_estadistica
+  \end{lstlisting}
+
+  \textbf{Informes:}
+  \begin{lstlisting}[language=bash]
+./pptex new report tesis
+./pptex new report informe_final
+  \end{lstlisting}
+
+  \textbf{Ver todos los proyectos:}
+  \begin{lstlisting}[language=bash]
+./pptex list
+  \end{lstlisting}
+
+  Cada proyecto queda en su propia subcarpeta:
+  \texttt{slides/congreso/}, \texttt{reports/tesis/}, etc.
+\end{frame}
+
+% ── Compilar ──────────────────────────────────────────────────────────────────
+\begin{frame}[fragile]{Compilar}
+
+  \textbf{Compilacion basica (XeLaTeX):}
+  \begin{lstlisting}[language=bash]
+./pptex compile slides congreso
+  \end{lstlisting}
+
+  \textbf{Con otro motor y bibliografia:}
+  \begin{lstlisting}[language=bash]
+./pptex compile reports tesis --engine lualatex --biber
+  \end{lstlisting}
+
+  \textbf{Modo watch — recompila al guardar:}
+  \begin{lstlisting}[language=bash]
+./pptex watch slides congreso
+  \end{lstlisting}
+
+  \textbf{Shell interactivo dentro del contenedor:}
+  \begin{lstlisting}[language=bash]
+./pptex shell
+  \end{lstlisting}
+\end{frame}
+
+% ── Estructura ────────────────────────────────────────────────────────────────
+\begin{frame}{Estructura de un proyecto de diapositivas}
+  \begin{columns}[T]
+    \begin{column}{0.45\textwidth}
+      \footnotesize
+      \texttt{slides/congreso/}\\
+      \texttt{├── main.tex}\\
+      \texttt{├── references.bib}\\
+      \texttt{├── figures/}\\
+      \texttt{└── slides/}\\
+      \texttt{\phantom{└── }├── 00\_title.tex}\\
+      \texttt{\phantom{└── }├── 01\_intro.tex}\\
+      \texttt{\phantom{└── }└── 02\_content.tex}
+    \end{column}
+    \begin{column}{0.52\textwidth}
+      \begin{itemize}
+        \item \textbf{main.tex} — metadatos y orden de slides
+        \item \textbf{slides/} — un archivo por seccion
+        \item \textbf{figures/} — imagenes y graficos
+        \item \textbf{references.bib} — bibliografia
+      \end{itemize}
+      \vspace{0.5em}
+      \begin{block}{Tip}
+        Agregar una seccion = crear un archivo y un \texttt{\textbackslash input\{\}} en \texttt{main.tex}.
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ── Motores ───────────────────────────────────────────────────────────────────
+\begin{frame}{Motores disponibles}
+  \begin{table}
+    \centering
+    \begin{tabular}{lll}
+      \toprule
+      Motor       & Flag              & Cuando usarlo \\
+      \midrule
+      XeLaTeX     & (default)         & Siempre, soporta Unicode y fuentes del sistema \\
+      LuaLaTeX    & \texttt{-{}-engine lualatex} & Programacion avanzada con Lua \\
+      pdfLaTeX    & \texttt{-{}-engine pdflatex} & Documentos legacy o maxima velocidad \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+
+  \vspace{0.5em}
+  \alert{XeLaTeX es el recomendado} para todos los templates de pptex.
+\end{frame}
