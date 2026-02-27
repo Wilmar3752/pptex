@@ -48,17 +48,23 @@ chmod +x pptex       # macOS / Linux only
 ### 4 — Create your first presentation
 
 ```bash
-./pptex new slides my-talk
-./pptex compile my-talk/main.tex
+./pptex new slides congreso          # creates slides/congreso/
+./pptex compile slides congreso      # → slides/congreso/main.pdf
 ```
 
-Your PDF will be at `my-talk/main.pdf`. Open it with any PDF viewer.
+Create as many projects as you want under `slides/`:
+
+```bash
+./pptex new slides curso_estadistica
+./pptex compile slides curso_estadistica
+./pptex list                          # see all projects
+```
 
 ### 5 — Create a report
 
 ```bash
-./pptex new report my-report
-./pptex compile my-report/main.tex
+./pptex new report tesis             # creates reports/tesis/
+./pptex compile reports tesis        # → reports/tesis/main.pdf
 ```
 
 ---
@@ -72,12 +78,16 @@ pptex <command> [options]
 | Command | Description |
 |---|---|
 | `build` | Build (or rebuild) the Docker image |
-| `compile <file.tex>` | Compile a LaTeX file to PDF |
-| `watch <file.tex>` | Watch and auto-recompile on changes |
-| `new slides <name>` | Create a new presentation from template |
-| `new report <name>` | Create a new report from template |
+| `new slides <name>` | Create a presentation project → `slides/<name>/` |
+| `new report <name>` | Create a report project → `reports/<name>/` |
+| `compile slides <name>` | Compile `slides/<name>/main.tex` |
+| `compile reports <name>` | Compile `reports/<name>/main.tex` |
+| `compile <file.tex>` | Compile any `.tex` file directly |
+| `watch slides <name>` | Watch and auto-recompile on changes |
+| `list [slides\|reports]` | List all projects |
+| `clean slides <name>` | Remove auxiliary files for a project |
+| `clean` | Remove auxiliary files in all projects |
 | `shell` | Open an interactive shell in the container |
-| `clean [dir]` | Remove LaTeX auxiliary files |
 
 ### Options for `compile` and `watch`
 
@@ -90,20 +100,25 @@ pptex <command> [options]
 ### Examples
 
 ```bash
-# Basic compile
-./pptex compile my-talk/main.tex
+# Create and compile a presentation
+./pptex new slides congreso
+./pptex compile slides congreso
 
-# Use LuaLaTeX with bibliography
-./pptex compile my-report/main.tex --engine lualatex --biber
+# Create and compile a report with bibliography
+./pptex new report tesis
+./pptex compile reports tesis --biber
 
 # Watch mode (Ctrl+C to stop)
-./pptex watch my-talk/main.tex
+./pptex watch slides congreso
 
-# Interactive shell (run any LaTeX command manually)
+# List all projects
+./pptex list
+
+# Clean one project
+./pptex clean slides congreso
+
+# Interactive shell
 ./pptex shell
-
-# Clean auxiliary files in a project
-./pptex clean my-talk/
 ```
 
 ---
@@ -113,12 +128,15 @@ pptex <command> [options]
 If you prefer `make`:
 
 ```bash
-make build      # Build Docker image
-make slides     # Compile templates/slides/main.tex
-make report     # Compile templates/report/main.tex
-make shell      # Interactive shell
-make clean      # Remove all auxiliary files
-make compile FILE=my-talk/main.tex   # Compile a specific file
+make build                           # Build Docker image
+make slides PROJ=congreso            # Compile slides/congreso/
+make report PROJ=tesis               # Compile reports/tesis/
+make watch  TYPE=slides PROJ=congreso
+make new-slides NAME=curso_estadistica
+make new-report NAME=practica
+make list                            # List all projects
+make clean  TYPE=slides PROJ=congreso
+make shell
 ```
 
 ---
@@ -127,33 +145,36 @@ make compile FILE=my-talk/main.tex   # Compile a specific file
 
 ```
 pptex/
-├── pptex                   # Main CLI script
-├── Dockerfile              # LaTeX Docker image
-├── docker-compose.yml      # Docker Compose configuration
-├── Makefile                # Convenience shortcuts
-├── templates/
-│   ├── slides/             # Beamer presentation template
-│   │   ├── main.tex        # Entry point
-│   │   ├── references.bib  # Bibliography
-│   │   └── slides/         # One file per section
-│   │       ├── 00_title.tex
-│   │       ├── 01_overview.tex
-│   │       ├── 02_content.tex
-│   │       └── 03_conclusion.tex
-│   └── report/             # Article report template
-│       ├── main.tex        # Entry point
-│       ├── preamble.tex    # All package imports
+├── pptex                        # Main CLI script
+├── Dockerfile                   # LaTeX Docker image
+├── docker-compose.yml
+├── Makefile
+│
+├── slides/                      # Your presentation projects live here
+│   ├── congreso/                #   pptex new slides congreso
+│   │   ├── main.tex
+│   │   ├── references.bib
+│   │   ├── figures/
+│   │   └── slides/
+│   └── curso_estadistica/       #   pptex new slides curso_estadistica
+│       └── ...
+│
+├── reports/                     # Your report projects live here
+│   └── tesis/                   #   pptex new report tesis
+│       ├── main.tex
+│       ├── preamble.tex
 │       ├── bibliography.bib
-│       ├── figures/        # Place images here
-│       └── sections/       # One file per section
-│           ├── 01_introduction.tex
-│           ├── 02_methodology.tex
-│           ├── 03_results.tex
-│           └── 04_conclusion.tex
+│       ├── figures/
+│       └── sections/
+│
+├── templates/                   # Source templates (do not edit directly)
+│   ├── slides/
+│   └── report/
+│
 └── docs/
-    ├── installation.md     # Detailed installation guide
-    ├── slides-guide.md     # Slides template guide
-    └── report-guide.md     # Report template guide
+    ├── installation.md
+    ├── slides-guide.md
+    └── report-guide.md
 ```
 
 ---

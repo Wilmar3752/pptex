@@ -24,29 +24,38 @@ usage() {
     echo "  pptex <command> [options]"
     echo ""
     echo -e "${BOLD}COMMANDS${NC}"
-    echo "  compile <file.tex>         Compile a LaTeX file to PDF"
-    echo "  watch   <file.tex>         Watch and recompile on changes"
-    echo "  new slides <name>          Create a new presentation from template"
-    echo "  new report <name>          Create a new report from template"
-    echo "  shell                      Open an interactive shell in the container"
-    echo "  build                      Build (or rebuild) the Docker image"
-    echo "  clean   [dir]              Remove LaTeX auxiliary files"
+    echo "  new     slides <name>        Create a new presentation  → slides/<name>/"
+    echo "  new     report <name>        Create a new report         → reports/<name>/"
+    echo "  compile slides <name>        Compile slides/<name>/main.tex"
+    echo "  compile reports <name>       Compile reports/<name>/main.tex"
+    echo "  compile <file.tex>           Compile any .tex file directly"
+    echo "  watch   slides <name>        Watch and recompile on changes"
+    echo "  watch   reports <name>       Watch reports/<name>/main.tex"
+    echo "  watch   <file.tex>           Watch any .tex file directly"
+    echo "  list    [slides|reports]     List all projects"
+    echo "  clean   slides <name>        Remove auxiliary files for a project"
+    echo "  clean   reports <name>       Remove auxiliary files for a project"
+    echo "  clean                        Remove auxiliary files in all projects"
+    echo "  shell                        Open an interactive shell in the container"
+    echo "  build                        Build (or rebuild) the Docker image"
     echo ""
     echo -e "${BOLD}OPTIONS (compile / watch)${NC}"
-    echo "  -e, --engine <engine>      pdflatex | xelatex | lualatex  (default: xelatex)"
-    echo "  -b, --biber                Run biber for bibliography (biblatex)"
-    echo "  -o, --output-dir <dir>     Output directory for the PDF (default: same as source)"
+    echo "  -e, --engine <engine>        pdflatex | xelatex | lualatex  (default: xelatex)"
+    echo "  -b, --biber                  Run biber for bibliography (biblatex)"
+    echo "  -o, --output-dir <dir>       Output directory for the PDF"
     echo ""
     echo -e "${BOLD}EXAMPLES${NC}"
     echo "  pptex build"
-    echo "  pptex new slides my-talk"
-    echo "  pptex compile my-talk/main.tex"
-    echo "  pptex compile my-talk/main.tex --engine lualatex --biber"
-    echo "  pptex watch my-talk/main.tex"
-    echo "  pptex clean my-talk/"
+    echo "  pptex new slides congreso"
+    echo "  pptex new slides curso_estadistica"
+    echo "  pptex compile slides congreso"
+    echo "  pptex compile slides congreso --engine lualatex --biber"
+    echo "  pptex watch slides congreso"
+    echo "  pptex list"
+    echo "  pptex clean slides congreso"
 }
 
-# ─── Image management ───────────────────────────────────────────────────────
+# ─── Image management ────────────────────────────────────────────────────────
 
 build_image() {
     info "Building Docker image ${IMAGE_NAME}:${IMAGE_TAG} ..."
@@ -61,26 +70,68 @@ ensure_image() {
     fi
 }
 
-# ─── Compile ────────────────────────────────────────────────────────────────
+# ─── Project resolution ──────────────────────────────────────────────────────
+# Given ("slides", "congreso") → returns absolute path to main.tex
+
+resolve_project() {
+    local type="$1"
+    local name="$2"
+
+    # Normalize: "report" → "reports", "slide" → "slides"
+    case "$type" in
+        slide|slides)       type="slides"  ;;
+        report|reports)     type="reports" ;;
+        presentation)       type="slides"  ;;
+        *) error "Unknown project type '${type}'. Use: slides | reports" ;;
+    esac
+
+    local project_dir="${PPTEX_DIR}/${type}/${name}"
+    [[ ! -d "$project_dir" ]] && error "Project not found: ${type}/${name}\n  Run 'pptex list' to see available projects."
+
+    local main="${project_dir}/main.tex"
+    [[ ! -f "$main" ]] && error "No main.tex found in ${type}/${name}/"
+
+    echo "$main"
+}
+
+# Parse positional args: returns either a resolved file path, or sets vars via
+# globals. Accepts:
+#   ("slides", "congreso")   → resolve project
+#   ("slides/congreso/main.tex")  → use directly
+resolve_file() {
+    local -n _out_file=$1; shift   # nameref for return value
+    local positional=("$@")
+
+    if [[ ${#positional[@]} -eq 2 ]]; then
+        _out_file="$(resolve_project "${positional[0]}" "${positional[1]}")"
+    elif [[ ${#positional[@]} -eq 1 ]]; then
+        _out_file="${positional[0]}"
+        [[ ! -f "$_out_file" ]] && error "File not found: ${_out_file}"
+    else
+        error "Specify a project or file.\n  Examples:\n    pptex compile slides congreso\n    pptex compile slides/congreso/main.tex"
+    fi
+}
+
+# ─── Compile ─────────────────────────────────────────────────────────────────
 
 cmd_compile() {
-    local file=""
     local engine="xelatex"
     local use_biber=false
     local output_dir=""
+    local positional=()
 
     while [[ $# -gt 0 ]]; do
         case "$1" in
-            -e|--engine)    engine="$2";     shift 2 ;;
-            -b|--biber)     use_biber=true;  shift   ;;
-            -o|--output-dir) output_dir="$2"; shift 2 ;;
-            -*)             error "Unknown option: $1" ;;
-            *)              file="$1";       shift   ;;
+            -e|--engine)     engine="$2";      shift 2 ;;
+            -b|--biber)      use_biber=true;   shift   ;;
+            -o|--output-dir) output_dir="$2";  shift 2 ;;
+            -*)              error "Unknown option: $1" ;;
+            *)               positional+=("$1"); shift  ;;
         esac
     done
 
-    [[ -z "$file" ]] && error "No .tex file specified. Usage: pptex compile <file.tex>"
-    [[ ! -f "$file" ]] && error "File not found: $file"
+    local file
+    resolve_file file "${positional[@]}"
 
     local abs_file
     abs_file="$(cd "$(dirname "$file")" && pwd)/$(basename "$file")"
@@ -120,24 +171,24 @@ cmd_compile() {
     success "Done! PDF: ${out_dir}/${basename}.pdf"
 }
 
-# ─── Watch ──────────────────────────────────────────────────────────────────
+# ─── Watch ───────────────────────────────────────────────────────────────────
 
 cmd_watch() {
-    local file=""
     local engine="xelatex"
     local use_biber=false
+    local positional=()
 
     while [[ $# -gt 0 ]]; do
         case "$1" in
             -e|--engine)  engine="$2";    shift 2 ;;
             -b|--biber)   use_biber=true; shift   ;;
             -*)           error "Unknown option: $1" ;;
-            *)            file="$1";      shift   ;;
+            *)            positional+=("$1"); shift ;;
         esac
     done
 
-    [[ -z "$file" ]] && error "No .tex file specified. Usage: pptex watch <file.tex>"
-    [[ ! -f "$file" ]] && error "File not found: $file"
+    local file
+    resolve_file file "${positional[@]}"
 
     local abs_file
     abs_file="$(cd "$(dirname "$file")" && pwd)/$(basename "$file")"
@@ -160,7 +211,7 @@ cmd_watch() {
         latexmk "${latexmk_args[@]}" "${basename}.tex"
 }
 
-# ─── New ────────────────────────────────────────────────────────────────────
+# ─── New ─────────────────────────────────────────────────────────────────────
 
 cmd_new() {
     local kind="${1:-}"
@@ -169,70 +220,142 @@ cmd_new() {
     [[ -z "$kind" ]] && error "Specify template type: pptex new slides <name>  or  pptex new report <name>"
     [[ -z "$name" ]] && error "Specify a project name: pptex new ${kind} <name>"
 
+    local src dest_base
     case "$kind" in
         slides|presentation)
-            local src="${PPTEX_DIR}/templates/slides"
+            src="${PPTEX_DIR}/templates/slides"
+            dest_base="${PPTEX_DIR}/slides"
             ;;
-        report)
-            local src="${PPTEX_DIR}/templates/report"
+        report|reports)
+            src="${PPTEX_DIR}/templates/report"
+            dest_base="${PPTEX_DIR}/reports"
             ;;
         *)
             error "Unknown template type '${kind}'. Use: slides | report"
             ;;
     esac
 
-    local dest="${PWD}/${name}"
-    [[ -d "$dest" ]] && error "Directory already exists: ${dest}"
+    mkdir -p "$dest_base"
+    local dest="${dest_base}/${name}"
+    [[ -d "$dest" ]] && error "Project already exists: ${dest}"
 
     cp -r "$src" "$dest"
-    success "Created ${kind} project at: ${dest}"
-    info "Compile with: pptex compile ${name}/main.tex"
+    success "Created ${kind} project: ${dest}"
+    info "Compile with:  pptex compile ${kind} ${name}"
+    info "Watch with:    pptex watch ${kind} ${name}"
 }
 
-# ─── Shell ──────────────────────────────────────────────────────────────────
+# ─── List ────────────────────────────────────────────────────────────────────
+
+cmd_list() {
+    local filter="${1:-all}"
+    local found=false
+
+    list_type() {
+        local type="$1"
+        local dir="${PPTEX_DIR}/${type}"
+
+        echo -e "${BOLD}${type}/${NC}"
+        if [[ ! -d "$dir" ]] || [[ -z "$(ls -A "$dir" 2>/dev/null)" ]]; then
+            echo -e "  ${YELLOW}(no projects yet)${NC}"
+            echo -e "  Create one: pptex new ${type%s} <name>"
+        else
+            for d in "${dir}"/*/; do
+                [[ -d "$d" ]] || continue
+                local pname
+                pname="$(basename "$d")"
+                local has_main=""
+                [[ -f "${d}main.tex" ]] && has_main=" ${GREEN}✓${NC}" || has_main=" ${RED}no main.tex${NC}"
+                echo -e "  ${pname}${has_main}"
+                found=true
+            done
+        fi
+        echo ""
+    }
+
+    case "$filter" in
+        slides)  list_type "slides"  ;;
+        reports) list_type "reports" ;;
+        all)
+            list_type "slides"
+            list_type "reports"
+            ;;
+        *) error "Unknown type '${filter}'. Use: slides | reports | all" ;;
+    esac
+}
+
+# ─── Clean ───────────────────────────────────────────────────────────────────
+
+cmd_clean() {
+    local positional=()
+
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -*) error "Unknown option: $1" ;;
+            *)  positional+=("$1"); shift  ;;
+        esac
+    done
+
+    clean_dir() {
+        local abs_dir="$1"
+        info "Cleaning ${abs_dir} ..."
+        docker run --rm \
+            -v "${abs_dir}:/workspace" \
+            -w /workspace \
+            "${IMAGE_NAME}:${IMAGE_TAG}" \
+            latexmk -C
+    }
+
+    ensure_image
+
+    if [[ ${#positional[@]} -eq 2 ]]; then
+        # pptex clean slides congreso
+        local main
+        main="$(resolve_project "${positional[0]}" "${positional[1]}")"
+        clean_dir "$(dirname "$main")"
+    elif [[ ${#positional[@]} -eq 1 ]]; then
+        # pptex clean path/to/dir  or  pptex clean all
+        if [[ "${positional[0]}" == "all" ]]; then
+            clean_dir "${PPTEX_DIR}"
+        else
+            local abs_dir
+            abs_dir="$(cd "${positional[0]}" && pwd)"
+            clean_dir "$abs_dir"
+        fi
+    else
+        # pptex clean → clean both slides/ and reports/
+        clean_dir "${PPTEX_DIR}"
+    fi
+
+    success "Clean complete."
+}
+
+# ─── Shell ───────────────────────────────────────────────────────────────────
 
 cmd_shell() {
     ensure_image
     info "Opening shell inside the LaTeX container (type 'exit' to leave)..."
     docker run --rm -it \
-        -v "${PWD}:/workspace" \
+        -v "${PPTEX_DIR}:/workspace" \
         -w /workspace \
         "${IMAGE_NAME}:${IMAGE_TAG}" \
         bash
 }
 
-# ─── Clean ──────────────────────────────────────────────────────────────────
-
-cmd_clean() {
-    local dir="${1:-.}"
-    [[ ! -d "$dir" ]] && error "Directory not found: $dir"
-
-    local abs_dir
-    abs_dir="$(cd "$dir" && pwd)"
-
-    info "Cleaning auxiliary files in ${abs_dir} ..."
-    docker run --rm \
-        -v "${abs_dir}:/workspace" \
-        -w /workspace \
-        "${IMAGE_NAME}:${IMAGE_TAG}" \
-        latexmk -C
-
-    success "Clean complete."
-}
-
-# ─── Entrypoint ─────────────────────────────────────────────────────────────
+# ─── Entrypoint ──────────────────────────────────────────────────────────────
 
 [[ $# -eq 0 ]] && usage && exit 0
 
 command="${1}"; shift
 
 case "$command" in
-    compile)  cmd_compile "$@" ;;
-    watch)    cmd_watch   "$@" ;;
-    new)      cmd_new     "$@" ;;
-    shell)    cmd_shell        ;;
-    build)    build_image      ;;
-    clean)    cmd_clean   "$@" ;;
-    -h|--help|help) usage      ;;
+    compile)        cmd_compile "$@" ;;
+    watch)          cmd_watch   "$@" ;;
+    new)            cmd_new     "$@" ;;
+    list)           cmd_list    "$@" ;;
+    clean)          cmd_clean   "$@" ;;
+    shell)          cmd_shell        ;;
+    build)          build_image      ;;
+    -h|--help|help) usage            ;;
     *) error "Unknown command: ${command}. Run 'pptex help' for usage." ;;
 esac

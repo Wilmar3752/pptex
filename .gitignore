@@ -22,8 +22,10 @@
 # latexmk output directory
 .latexmk_cache/
 
-# PDFs (comment out if you want to commit compiled PDFs)
-# *.pdf
+# PDFs generated in project directories (slides/ and reports/)
+# Comment these out if you want to commit compiled PDFs
+slides/**/*.pdf
+reports/**/*.pdf
 
 # OS
 .DS_Store
