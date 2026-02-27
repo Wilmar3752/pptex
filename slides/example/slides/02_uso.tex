@@ -6,15 +6,15 @@
   \begin{center}
     \begin{tikzpicture}[
       node distance=2.6cm,
-      step/.style={rectangle, draw, rounded corners=5pt,
-                   minimum width=2.8cm, minimum height=1cm,
-                   fill=pptexBlue!15, font=\small\bfseries},
+      wfnode/.style={rectangle, draw, rounded corners=5pt,
+                     minimum width=2.8cm, minimum height=1cm,
+                     fill=pptexBlue!15, font=\small\bfseries},
       lbl/.style={font=\tiny\ttfamily, text=gray, below=2pt},
     ]
-      \node[step] (new)  {new};
-      \node[step] (edit) [right of=new]    {editar};
-      \node[step] (comp) [right of=edit]   {compile};
-      \node[step] (pdf)  [right of=comp]   {PDF};
+      \node[wfnode] (new)  {new};
+      \node[wfnode] (edit) [right of=new]    {editar};
+      \node[wfnode] (comp) [right of=edit]   {compile};
+      \node[wfnode] (pdf)  [right of=comp]   {PDF};
 
       \draw[->, thick] (new)  -- (edit);
       \draw[->, thick] (edit) -- (comp);
@@ -110,13 +110,13 @@
 \begin{frame}{Motores disponibles}
   \begin{table}
     \centering
-    \begin{tabular}{lll}
+    \begin{tabular}{llp{5cm}}
       \toprule
-      Motor       & Flag              & Cuando usarlo \\
+      Motor    & Flag                         & Cuando usarlo \\
       \midrule
-      XeLaTeX     & (default)         & Siempre, soporta Unicode y fuentes del sistema \\
-      LuaLaTeX    & \texttt{-{}-engine lualatex} & Programacion avanzada con Lua \\
-      pdfLaTeX    & \texttt{-{}-engine pdflatex} & Documentos legacy o maxima velocidad \\
+      XeLaTeX  & (default)                    & Siempre. Unicode y fuentes del sistema \\
+      LuaLaTeX & \texttt{-{}-engine lualatex} & Programacion avanzada con Lua \\
+      pdfLaTeX & \texttt{-{}-engine pdflatex} & Documentos legacy \\
       \bottomrule
     \end{tabular}
   \end{table}
