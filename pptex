@@ -5,6 +5,9 @@ PPTEX_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 IMAGE_NAME="pptex"
 IMAGE_TAG="latest"
 
+# Prevent Git Bash on Windows from converting Unix paths in docker -v flags
+export MSYS_NO_PATHCONV=1
+
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
