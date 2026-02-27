@@ -15,4 +15,4 @@ WORKDIR /workspace
 
 LABEL org.opencontainers.image.title="pptex" \
       org.opencontainers.image.description="LaTeX environment for slides and reports" \
-      org.opencontainers.image.source="https://github.com/yourusername/pptex"
+      org.opencontainers.image.source="https://github.com/Wilmar3752/pptex"
