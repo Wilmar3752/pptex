@@ -1,0 +1,86 @@
+% ──────────────────────────────────────────────────────────────────────────────
+%  pptex — Beamer Presentation Template
+%  Engine: XeLaTeX  |  Theme: Metropolis
+%  Compile: pptex compile main.tex
+% ──────────────────────────────────────────────────────────────────────────────
+
+\documentclass[
+  aspectratio=169,     % 16:9 widescreen (use 43 for 4:3)
+  12pt,
+  xcolor={dvipsnames}
+]{beamer}
+
+% ── Theme ─────────────────────────────────────────────────────────────────────
+\usetheme[
+  progressbar=frametitle,
+  block=fill,
+]{metropolis}
+
+% ── Packages ──────────────────────────────────────────────────────────────────
+\usepackage{fontspec}           % XeLaTeX font support
+\usepackage{polyglossia}        % Multilingual support
+  \setdefaultlanguage{english}
+\usepackage{microtype}          % Typography refinements
+\usepackage{graphicx}           % Images
+\usepackage{booktabs}           % Professional tables
+\usepackage{listings}           % Code listings
+\usepackage{xcolor}             % Colors
+\usepackage{tikz}               % Diagrams
+  \usetikzlibrary{arrows.meta, positioning, shapes}
+\usepackage{pgfplots}           % Charts
+  \pgfplotsset{compat=1.18}
+\usepackage{hyperref}           % Links
+\usepackage[style=authoryear, backend=biber]{biblatex}
+  \addbibresource{references.bib}
+
+% ── Colors ────────────────────────────────────────────────────────────────────
+\definecolor{pptexBlue}{HTML}{2B4590}
+\definecolor{pptexAccent}{HTML}{E8433A}
+\definecolor{pptexLight}{HTML}{F5F5F5}
+
+\setbeamercolor{palette primary}{bg=pptexBlue}
+\setbeamercolor{progress bar}{fg=pptexAccent}
+\setbeamercolor{title separator}{fg=pptexAccent}
+\setbeamercolor{alerted text}{fg=pptexAccent}
+
+% ── Fonts ─────────────────────────────────────────────────────────────────────
+% Uncomment to use custom fonts (must be installed in the container or in ./fonts/)
+% \setmainfont{Source Serif 4}
+% \setsansfont{Source Sans 3}
+% \setmonofont{Source Code Pro}
+
+% ── Code listings style ───────────────────────────────────────────────────────
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{pptexBlue}\bfseries,
+  commentstyle=\color{gray}\itshape,
+  stringstyle=\color{pptexAccent},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  frame=single,
+  breaklines=true,
+  captionpos=b,
+  backgroundcolor=\color{pptexLight},
+}
+
+% ── Metadata ──────────────────────────────────────────────────────────────────
+\title{Your Presentation Title}
+\subtitle{An Optional Subtitle}
+\author{Author Name}
+\institute{Institution or Organization}
+\date{\today}
+
+% ──────────────────────────────────────────────────────────────────────────────
+\begin{document}
+
+\input{slides/00_title}
+\input{slides/01_overview}
+\input{slides/02_content}
+\input{slides/03_conclusion}
+
+% ── References ────────────────────────────────────────────────────────────────
+\begin{frame}[allowframebreaks]{References}
+  \printbibliography[heading=none]
+\end{frame}
+
+\end{document}

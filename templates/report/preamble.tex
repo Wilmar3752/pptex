@@ -1,0 +1,105 @@
+% ── Encoding & Fonts ──────────────────────────────────────────────────────────
+\usepackage{fontspec}
+\usepackage{polyglossia}
+  \setdefaultlanguage{english}
+
+% Uncomment to use custom fonts:
+% \setmainfont{Source Serif 4}
+% \setsansfont{Source Sans 3}
+% \setmonofont[Scale=0.9]{Source Code Pro}
+
+% ── Page Layout ───────────────────────────────────────────────────────────────
+\usepackage[
+  top=2.5cm, bottom=2.5cm,
+  left=3cm,  right=3cm,
+  includeheadfoot,
+]{geometry}
+
+% ── Headers & Footers ─────────────────────────────────────────────────────────
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\leftmark}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ── Typography ────────────────────────────────────────────────────────────────
+\usepackage{microtype}
+\usepackage{setspace}
+  \setstretch{1.15}
+\usepackage{parskip}
+
+% ── Math ──────────────────────────────────────────────────────────────────────
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}{Remark}[section]
+
+% ── Figures & Tables ──────────────────────────────────────────────────────────
+\usepackage{graphicx}
+  \graphicspath{{figures/}}
+\usepackage{float}
+\usepackage{caption}
+  \captionsetup{font=small, labelfont=bf}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{array}
+
+% ── Code ──────────────────────────────────────────────────────────────────────
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{codegray}{gray}{0.95}
+\definecolor{codeblue}{HTML}{2B4590}
+\definecolor{codered}{HTML}{E8433A}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{codeblue}\bfseries,
+  commentstyle=\color{gray}\itshape,
+  stringstyle=\color{codered},
+  backgroundcolor=\color{codegray},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  frame=single,
+  framesep=4pt,
+  breaklines=true,
+  captionpos=b,
+  tabsize=2,
+}
+
+% ── Diagrams ──────────────────────────────────────────────────────────────────
+\usepackage{tikz}
+  \usetikzlibrary{arrows.meta, positioning, shapes, fit, backgrounds}
+\usepackage{pgfplots}
+  \pgfplotsset{compat=1.18}
+
+% ── Bibliography ──────────────────────────────────────────────────────────────
+\usepackage[
+  style=authoryear,
+  backend=biber,
+  sorting=nyt,
+  maxcitenames=2,
+]{biblatex}
+\addbibresource{bibliography.bib}
+
+% ── Cross-references & Links ──────────────────────────────────────────────────
+\usepackage[
+  colorlinks=true,
+  linkcolor=codeblue,
+  citecolor=codeblue,
+  urlcolor=codeblue,
+  bookmarksopen=true,
+]{hyperref}
+\usepackage{cleveref}   % \cref{} for smart cross-references
+
+% ── Misc ──────────────────────────────────────────────────────────────────────
+\usepackage{enumitem}
+\usepackage{csquotes}   % Required by biblatex with polyglossia
+\usepackage{lipsum}     % Lorem ipsum (remove in your actual document)

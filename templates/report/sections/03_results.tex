@@ -1,0 +1,60 @@
+\section{Results}
+\label{sec:results}
+
+Present your findings objectively. Use tables and figures to support the text.
+Describe what is shown without yet interpreting it (save interpretation for
+\cref{sec:conclusion}).
+
+\subsection{Quantitative Results}
+
+\Cref{tab:results} shows the performance of each method.
+
+\begin{table}[h]
+  \centering
+  \caption{Comparison of methods on the test set.}
+  \label{tab:results}
+  \begin{tabular}{lrrc}
+    \toprule
+    Method       & Metric A (\%) & Metric B (s) & Notes   \\
+    \midrule
+    Baseline     & 72.3          & 1.45         & —       \\
+    Ours (v1)    & 85.1          & 0.92         & +12.8\% \\
+    Ours (v2)    & \textbf{91.4} & \textbf{0.78} & +19.1\% \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Visual Analysis}
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      width=0.72\textwidth, height=5cm,
+      ybar, bar width=18pt,
+      symbolic x coords={Baseline, Ours v1, Ours v2},
+      xtick=data,
+      ylabel={Metric A (\%)},
+      ymin=60, ymax=100,
+      nodes near coords,
+      every node near coord/.style={font=\small},
+      enlarge x limits=0.3,
+    ]
+      \addplot[fill=codeblue!70] coordinates {
+        (Baseline,72.3) (Ours v1,85.1) (Ours v2,91.4)
+      };
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Metric A scores across methods.}
+  \label{fig:results-bar}
+\end{figure}
+
+\subsection{Code Snapshot}
+
+\begin{lstlisting}[language=Python, caption={Core algorithm implementation.}]
+def run_experiment(config):
+    model = build_model(config)
+    train(model, config.train_data)
+    metrics = evaluate(model, config.test_data)
+    return metrics
+\end{lstlisting}

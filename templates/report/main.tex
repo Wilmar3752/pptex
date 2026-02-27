@@ -1,0 +1,53 @@
+% ──────────────────────────────────────────────────────────────────────────────
+%  pptex — Report Template
+%  Engine: XeLaTeX
+%  Compile: pptex compile main.tex
+% ──────────────────────────────────────────────────────────────────────────────
+
+\documentclass[
+  12pt,
+  a4paper,
+  twoside=false,
+]{article}
+
+\input{preamble}
+
+% ── Metadata ──────────────────────────────────────────────────────────────────
+\title{\textbf{Report Title}\\[0.4em]
+       \large An Optional Subtitle}
+\author{Author Name\thanks{Institution. \texttt{email@institution.com}}}
+\date{\today}
+
+% ──────────────────────────────────────────────────────────────────────────────
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+% ── Abstract ──────────────────────────────────────────────────────────────────
+\begin{abstract}
+  \noindent
+  A concise summary of the report in 150--250 words. State the purpose,
+  methodology, key results, and main conclusions. Write this last, after
+  the rest of the report is complete.
+\end{abstract}
+
+\newpage
+\tableofcontents
+\newpage
+
+% ── Sections ──────────────────────────────────────────────────────────────────
+\input{sections/01_introduction}
+\input{sections/02_methodology}
+\input{sections/03_results}
+\input{sections/04_conclusion}
+
+% ── Bibliography ──────────────────────────────────────────────────────────────
+\newpage
+\printbibliography[heading=bibintoc]
+
+% ── Appendices ────────────────────────────────────────────────────────────────
+% \appendix
+% \input{sections/appendix_a}
+
+\end{document}

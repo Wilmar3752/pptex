@@ -1,0 +1,62 @@
+\section{Methodology}
+\label{sec:methodology}
+
+Describe \emph{how} you carried out the work. This section should be detailed
+enough for another researcher to replicate the study.
+
+\subsection{Data / Materials}
+
+Describe the data sources, datasets, or materials used.
+\Cref{tab:dataset} summarizes the dataset characteristics.
+
+\begin{table}[h]
+  \centering
+  \caption{Dataset overview.}
+  \label{tab:dataset}
+  \begin{tabular}{lrr}
+    \toprule
+    Split      & Samples & Features \\
+    \midrule
+    Training   & 8\,000  & 128      \\
+    Validation & 1\,000  & 128      \\
+    Test       & 1\,000  & 128      \\
+    \midrule
+    \textbf{Total} & \textbf{10\,000} & 128 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Approach}
+
+Describe the method, algorithm, or process step by step.
+\Cref{fig:pipeline} illustrates the processing pipeline.
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[
+    node distance=2.2cm,
+    stage/.style={rectangle, draw, rounded corners=4pt,
+                  minimum width=2.4cm, minimum height=0.9cm,
+                  fill=codeblue!12, font=\small},
+  ]
+    \node[stage] (a) {Data};
+    \node[stage] (b) [right of=a] {Process};
+    \node[stage] (c) [right of=b] {Evaluate};
+    \node[stage] (d) [right of=c] {Output};
+
+    \draw[->, thick] (a) -- (b);
+    \draw[->, thick] (b) -- (c);
+    \draw[->, thick] (c) -- (d);
+  \end{tikzpicture}
+  \caption{Overview of the processing pipeline.}
+  \label{fig:pipeline}
+\end{figure}
+
+\subsection{Evaluation Metrics}
+
+Define the metrics used to measure success:
+
+\begin{description}
+  \item[Metric A] Formal definition, e.g.\ $F_1 = 2\,\frac{P \cdot R}{P + R}$
+  \item[Metric B] Another metric with its formula or description
+\end{description}
