@@ -355,7 +355,7 @@ case "$command" in
     list)           cmd_list    "$@" ;;
     clean)          cmd_clean   "$@" ;;
     shell)          cmd_shell        ;;
-    build)          build_image      ;;
+    build)          build_image "$@" ;;
     -h|--help|help) usage            ;;
     *) error "Unknown command: ${command}. Run 'pptex help' for usage." ;;
 esac
