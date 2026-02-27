@@ -32,7 +32,7 @@ Clone the repo, have Docker running, and you're compiling PDFs in under a minute
 ### 2 — Clone & set up
 
 ```bash
-git clone https://github.com/yourusername/pptex.git
+git clone https://github.com/Wilmar3752/pptex.git
 cd pptex
 chmod +x pptex       # macOS / Linux only
 ```
@@ -212,7 +212,7 @@ The most robust option. Docker Desktop integrates natively with WSL2 and the exp
 3. Open your WSL terminal:
 
 ```bash
-git clone https://github.com/yourusername/pptex.git
+git clone https://github.com/Wilmar3752/pptex.git
 cd pptex
 chmod +x pptex
 ./pptex build
@@ -223,7 +223,7 @@ chmod +x pptex
 Works with [Git for Windows](https://git-scm.com/download/win). The script sets `MSYS_NO_PATHCONV=1` automatically to prevent Git Bash from mangling Docker volume paths.
 
 ```bash
-git clone https://github.com/yourusername/pptex.git
+git clone https://github.com/Wilmar3752/pptex.git
 cd pptex
 ./pptex build
 ```

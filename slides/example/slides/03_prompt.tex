@@ -1,41 +1,24 @@
 % ── Sección: El Prompt ────────────────────────────────────────────────────────
 \section{El Prompt}
 
-% ── Contexto ──────────────────────────────────────────────────────────────────
-\begin{frame}{Como se hizo todo esto}
-  \begin{exampleblock}{Herramienta}
-    \textbf{Claude Code} (Sonnet 4.6) — CLI de Anthropic que corre
-    directamente en la terminal y puede leer, crear y editar archivos.
-  \end{exampleblock}
+% ── El Prompt ─────────────────────────────────────────────────────────────────
+\begin{frame}[fragile]{El prompt que genero esta presentacion}
 
-  \vspace{0.8em}
-
-  \begin{itemize}
-    \item \textbf{1 sesion} de trabajo
-    \item \textbf{5 prompts} en total
-    \item Desde cero hasta presentacion compilada
-    \item Sin editar manualmente un solo archivo \texttt{.tex}
-  \end{itemize}
-\end{frame}
-
-% ── Prompts ───────────────────────────────────────────────────────────────────
-\begin{frame}[fragile]{Los 5 prompts}
-
-  \begin{lstlisting}[language=bash, basicstyle=\ttfamily\footnotesize]
-1. "Este proyecto, pptex, sera enfocado en usar facilmente
-    latex en cualquier sistema operativo [...] Crea el plan
-    de implementacion con buena documentacion [...]"
-
-2. "implementalo"
-
-3. "Quiero que templates/report y templates/slides maneje
-    cada proyecto por subcarpetas, por ejemplo slides/congreso"
-
-4. "habra una imagen mas liviana de latex?"  (respondido, revertido)
-
-5. "example sera una presentacion con el titulo
-    'Esta presentacion es toda vibecodeada' [...]"
+  \begin{lstlisting}[basicstyle=\ttfamily\small, breaklines=true]
+"example sera una presentacion con el
+titulo 'Esta presentacion es toda
+vibecodeada', la presentacion nos
+explicara la instalacion, uso de pptex
+(plug and play latex) y al final el
+prompt con el que se hizo la
+presentacion"
   \end{lstlisting}
+
+  \vspace{0.6em}
+  \begin{exampleblock}{Herramienta}
+    \textbf{Claude Code} (Sonnet 4.6) — escrito en la terminal,
+    sin tocar un solo archivo \texttt{.tex} manualmente.
+  \end{exampleblock}
 \end{frame}
 
 % ── Lo que genero ─────────────────────────────────────────────────────────────
@@ -82,7 +65,7 @@
   }\\[2em]
   {\small\color{white!60}
     Hecho enteramente con Claude Code (Sonnet 4.6)\\[0.3em]
-    \url{github.com/tuusuario/pptex}
+    \url{github.com/Wilmar3752/pptex}
   }
 \end{frame}
 }

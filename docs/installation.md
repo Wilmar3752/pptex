@@ -26,7 +26,7 @@ docker --version
 ### 2. Clone pptex
 
 ```bash
-git clone https://github.com/yourusername/pptex.git ~/pptex
+git clone https://github.com/Wilmar3752/pptex.git ~/pptex
 cd ~/pptex
 chmod +x pptex
 ```
@@ -83,7 +83,7 @@ sudo usermod -aG docker $USER
 ### 2. Clone pptex
 
 ```bash
-git clone https://github.com/yourusername/pptex.git ~/pptex
+git clone https://github.com/Wilmar3752/pptex.git ~/pptex
 cd ~/pptex
 chmod +x pptex
 echo 'export PATH="$HOME/pptex:$PATH"' >> ~/.bashrc
@@ -119,7 +119,7 @@ pptex build
 2. Install [Git for Windows](https://git-scm.com/download/win) (includes Git Bash).
 3. Open Git Bash:
    ```bash
-   git clone https://github.com/yourusername/pptex.git ~/pptex
+   git clone https://github.com/Wilmar3752/pptex.git ~/pptex
    cd ~/pptex
    chmod +x pptex
    ./pptex build
