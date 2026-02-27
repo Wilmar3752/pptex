@@ -151,7 +151,9 @@ cmd_compile() {
 
     ensure_image
 
-    info "Compiling ${basename}.tex with ${engine}${use_biber:+ + biber}..."
+    local biber_label=""
+    [[ "$use_biber" == true ]] && biber_label=" + biber"
+    info "Compiling ${basename}.tex with ${engine}${biber_label}..."
 
     local docker_cmd="latexmk ${latexmk_args[*]} '${basename}.tex'"
 
