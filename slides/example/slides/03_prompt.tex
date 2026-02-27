@@ -1,0 +1,88 @@
+% ── Sección: El Prompt ────────────────────────────────────────────────────────
+\section{El Prompt}
+
+% ── Contexto ──────────────────────────────────────────────────────────────────
+\begin{frame}{Como se hizo todo esto}
+  \begin{exampleblock}{Herramienta}
+    \textbf{Claude Code} (Sonnet 4.6) — CLI de Anthropic que corre
+    directamente en la terminal y puede leer, crear y editar archivos.
+  \end{exampleblock}
+
+  \vspace{0.8em}
+
+  \begin{itemize}
+    \item \textbf{1 sesion} de trabajo
+    \item \textbf{5 prompts} en total
+    \item Desde cero hasta presentacion compilada
+    \item Sin editar manualmente un solo archivo \texttt{.tex}
+  \end{itemize}
+\end{frame}
+
+% ── Prompts ───────────────────────────────────────────────────────────────────
+\begin{frame}[fragile]{Los 5 prompts}
+
+  \begin{lstlisting}[language=bash, basicstyle=\ttfamily\footnotesize]
+1. "Este proyecto, pptex, sera enfocado en usar facilmente
+    latex en cualquier sistema operativo [...] Crea el plan
+    de implementacion con buena documentacion [...]"
+
+2. "implementalo"
+
+3. "Quiero que templates/report y templates/slides maneje
+    cada proyecto por subcarpetas, por ejemplo slides/congreso"
+
+4. "habra una imagen mas liviana de latex?"  (respondido, revertido)
+
+5. "example sera una presentacion con el titulo
+    'Esta presentacion es toda vibecodeada' [...]"
+  \end{lstlisting}
+\end{frame}
+
+% ── Lo que genero ─────────────────────────────────────────────────────────────
+\begin{frame}{Lo que genero Claude Code}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \textbf{Infraestructura:}
+      \begin{itemize}
+        \item \texttt{Dockerfile}
+        \item \texttt{docker-compose.yml}
+        \item \texttt{pptex} (CLI bash, 250+ lineas)
+        \item \texttt{Makefile}
+        \item \texttt{.gitignore}
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \textbf{Templates + Docs:}
+      \begin{itemize}
+        \item Template slides (5 archivos)
+        \item Template report (7 archivos)
+        \item \texttt{README.md}
+        \item \texttt{docs/installation.md}
+        \item \texttt{docs/slides-guide.md}
+        \item \texttt{docs/report-guide.md}
+      \end{itemize}
+    \end{column}
+  \end{columns}
+
+  \vspace{0.5em}
+  \begin{block}{Total}
+    \textbf{24 archivos}, \(\sim\)1900 lineas de codigo y documentacion.
+  \end{block}
+\end{frame}
+
+% ── Cierre ────────────────────────────────────────────────────────────────────
+{
+\setbeamercolor{background canvas}{bg=pptexBlue}
+\begin{frame}[plain]
+  \centering
+  \vspace{2.5em}
+  {\LARGE\color{white}\textbf{plug \& play LaTeX}}\\[1em]
+  {\normalsize\color{white!80}
+    \texttt{git clone} \quad \texttt{./pptex build} \quad \texttt{./pptex new slides mi-charla}
+  }\\[2em]
+  {\small\color{white!60}
+    Hecho enteramente con Claude Code (Sonnet 4.6)\\[0.3em]
+    \url{github.com/tuusuario/pptex}
+  }
+\end{frame}
+}
