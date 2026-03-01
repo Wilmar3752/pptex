@@ -1,0 +1,249 @@
+\usepackage{blindtext}
+\usepackage{lipsum}
+
+\def\lrand{\lipsum[-]}
+\def\firstname{Wilmar}
+\def\lastname{Sepulveda Herrera}
+\def\email{wilmar.sepulveda2@gmail.com}
+\def\linkedin{https://www.linkedin.com/in/wilmar3752/}
+\def\github{https://github.com/Wilmar3752}
+\def\web{https://wilmar3752.github.io}
+\def\jasphone{+57 (311) 371-6605}
+
+% \def\jbegin{\begin{itemize}}
+% \def\jitem{\item }
+% \def\jend{\end{itemize}}
+\def\jbegin{\resumeItemListStart}
+\def\jitem{\resumeItem}
+\def\jend{\resumeItemListEnd}
+
+\def\profileSummary{
+\section{Sobre mi}
+Estadístico MSc con más de 6 años de experiencia desarrollando soluciones analíticas end-to-end utilizando modelos estadísticos, machine learning e inteligencia artificial para el sector financiero y asegurador. Especializado en MLOps, ingeniería de datos y analítica avanzada. Historial comprobado de incrementar la rentabilidad en negocios de créditos y seguros mediante estrategias basadas en datos, fomentando una sólida cultura de datos. Apasionado por la docencia e investigación, con experiencia en análisis de supervivencia, modelado predictivo e infraestructura de datos escalable.
+}
+
+
+\def\achievements{
+    \jbegin
+        \jitem{\lrand[1]}
+        \jitem {\lrand[2]}
+        \jitem {\lrand[1]}
+        \jitem {\lrand[2]}
+    \jend
+}
+
+% # Add education item here
+\EducationTemplate{post}
+{Agosto 2020}{Diciembre 2023}{Universidad del Valle}
+{Magister en estadística}
+{4.7/5}
+\EducationTemplate{pre}
+{Enero 2011}{Diciembre 2017}{Universidad del Valle}
+{Estadístico}
+{4/5}
+
+
+\ExpTemplate{Coderland}
+{Marzo 2025}
+{Presente}
+{Lead Data Scientist}
+{\href{https://www.coderland.com/}{Coderland}}
+{Tecnología}
+{
+\jbegin
+    \jitem{Trabajo para ASSA, la empresa de seguros más grande de Centroamérica, en colaboración con McKinsey \& Company, para la creación de Feature Store y precios dinámicos a través de Machine Learning.}
+    \jitem{Desarrollé e implementé modelos de precios, predicción de churn y análisis de valor de vida del cliente (LTV) utilizando técnicas avanzadas de machine learning.}
+    \jitem{Construí modelos predictivos para reducir la morosidad de clientes, mejorando la gestión de riesgo de cartera y la eficiencia en cobranzas.}
+    \jitem{Desarrollé modelos de estimación de costo de piezas en reclamos de auto, optimizando el procesamiento de siniestros y reduciendo costos operativos.}
+    \jitem{Implementé modelos de predicción de churn en ramo de vida utilizando análisis de supervivencia, pronosticando el tiempo esperado de permanencia del cliente con la póliza para mejorar estrategias de retención.}
+\jend
+}
+
+\ExpTemplate{R52}
+{Marzo 2022}
+{Marzo 2025}
+{Líder de Analítica Avanzada}
+{\href{https://www.grupor5.com/}{R5}}
+{Insurtech}
+{
+\jbegin
+    \jitem{Lideré un equipo de 5 científicos de datos en proyectos de Machine Learning, Analítica Descriptiva y MLOps.}
+    \jitem{Mejoré el producto SOAT con ML, logrando un Loss Ratio de 70\% vs 120\% del mercado, generando miles de millones en ganancias.}
+    \jitem{Usando aprendizaje no supervisado, mejoré la eficiencia en cobranzas y selección de clientes de crédito.}
+\jend
+}
+\ExpTemplate{R51}
+{Nov 2023}
+{Dic 2023}
+{Senior Data Scientist}
+{\href{}{Alcaldíá de Santiago de Cali}}
+{Contratista}
+{
+\jbegin
+    \jitem{Implementar modelos de Machine learning para predecir mortalidad fetal y no fetal.}
+    \jitem{Construcción de un tablero de control para cacterizar la mortalidad infantil.}
+\jend
+}
+
+\ExpTemplate{Excelcredit}
+{Mayo 2021}
+{Marzo 2022}
+{Senior Data Scientist}
+{Excelcredit}
+{Fintech}
+{
+\jbegin
+    \jitem{Desarrollé soluciones analíticas para gestión de riesgo crediticio: modelos de provisión, predicción de prepago y análisis LTV.}
+    \jitem{Construí modelos de segmentación de clientes y sistemas de evaluación de riesgo LAFT para cumplimiento y mitigación de riesgos.}
+    \jitem{Creé dashboards automatizados y modelos predictivos para mejorar la toma de decisiones y monitoreo de cartera.}
+\jend
+}
+
+
+\ExpTemplate{BDO}
+{Sept 2020}
+{Mayo 2021}
+{Data Scientist}
+{Banco de Occidente}
+{Banca tradicional}
+{
+\jbegin
+    \jitem{Diseñé modelos de ML para optimización de cobranza y evaluación de riesgo de cartera, mejorando tasas de recuperación.}
+    \jitem{Desarrollé modelos predictivos para evaluar impacto en flujo de caja durante Covid-19, permitiendo gestión proactiva de riesgo.}
+    \jitem{Implementé soluciones para normalización de cartera y scoring crediticio, mejorando evaluación de riesgo y decisiones de préstamo.}
+\jend
+}
+
+\ExpTemplate{UV}
+{Abril 2019}
+{Dic 2019}
+{Data Analyst}
+{Universidad del valle}
+{Oficina de planeación}
+{
+\jbegin
+    \jitem{Construcción de tableros de control para el análisis de las pruebas Saber-Pro, utilizando ShinyApps.}
+    \jitem{Construcción de anuario estadístico 2018.}
+    \jitem{Carga de diferentes indicadores de la universidad en el SNIES.}
+\jend
+}
+
+\ExpTemplate{ulibre}
+{Nov 2023}
+{Presente}
+{Docente}
+{Universidad Libre - Cali}
+{Diplomado Machine Learning}
+{
+\jbegin
+    \jitem{Imparto Estadística para Ciencia de Datos a 4 cohortes, cubriendo conceptos fundamentales para ML y análisis de datos.}
+    \jitem{Desarrollo currículo sobre teoría de probabilidad, pruebas de hipótesis, análisis de regresión e inferencia estadística.}
+    \jitem{Guió proyectos prácticos de análisis estadístico con Python y R, preparando estudiantes para desafíos reales.}
+\jend
+}
+\ExpTemplate{uvalle}
+{Nov 2021}
+{Feb 2022}
+{Asistente de docencia}
+{Universidad del valle}
+{Facultad de Ingeniería}
+{
+\jbegin
+    \jitem{Impartir el curso de Probabilidad y Estadística a estudiantes de Ingeniería de Sistemas.}
+    \jitem{Impartir el curso de Fundamentos de Estadística a estudiantes de Ingenieríá Agrícola.}
+\jend
+}
+
+\ExpTemplate{comfe}
+{Febrero 2019}
+{Enero 2021}
+{Docente}
+{Comfenalco - PEC}
+{Tecnico laboral}
+{
+\jbegin
+    \jitem{Orientar a los afiliados a la caja de compensación pertenecientes a los programas técnicos laborales; auxiliar administrativo y auxiliar contable (matemáticas, procesar datos, trabajo de grado.)}
+\jend
+}
+
+
+
+\HckTemplate{HackCIMDGS}
+{2019}
+{\lrand[1]}
+{\lrand[3]}
+{\jbegin
+    \jitem{\lrand[27]}
+    \jitem{ \lrand[28]}
+\jend}
+
+
+\HckTemplate{HackWInfy}
+{2019}
+{\lrand[1]}
+{\lrand[3]}
+{\jbegin
+    \jitem{\lrand[27]}
+    \jitem{ \lrand[28]}
+    \jitem{ \lrand[30]}
+\jend}
+
+\HckTemplate{i3wm}
+{}
+{\lrand[1]}
+{\lrand[2]}
+{\jbegin
+    \item{\lrand[20]{}}
+    \item {\lrand[30]}
+    \item {\lrand[2]}
+\jend}
+
+\HckTemplate{scrapper}
+{}
+{\href{https://github.com/Wilmar3752/meli_scrapper}{Web Scraping MELI}}
+{Realiza Web scraping de la lista de todos los productos publicados en Mercado Libre. Aquí certifico mis conocimientos en Web Scraping, Docker, CI/CD, Python.}
+{}
+
+\HckTemplate{scrapperETL}
+{}
+{\href{https://github.com/Wilmar3752/ETL_scraper}{CAR ETL}}
+{Realizo un proceso de ETL donde extraigo datos de vehiculos, los proceso con Python y los cargo a AWS S3, usando GitHub Actions.}
+{}
+
+\HckTemplate{carpredict}
+{}
+{\href{https://github.com/Wilmar3752/car_predict}{CAR PREDICT}}
+{Realizo un modelo de machine learning utilizando diferentes tecnologias: DVC, FastAPI, Docker, Python.}
+{}
+
+\HckTemplate{carpredictapp}
+{}
+{\href{https://github.com/Wilmar3752/car_predict}{CAR PREDICT APP}}
+{Aquí se realiza una aplicacion web con Streamlit, la cual tiene su respectiva base de datos.}
+{}
+
+\HckTemplate{itseries}
+{}
+{\href{https://github.com/Wilmar3752/itseries}{ITSERIES}}
+{Un paquete de R para analizar procesos estocásticos irregularmente espaciados.}
+{}
+
+\HckTemplate{cluster}
+{}
+{\href{https://github.com/Wilmar3752/cluster-app}{Cluster-APP}}
+{En Este proyecto realizo una APP con Gradio y HuggingFace para clasificar clientes de tarjeta de crédito.}
+{}
+% \DefineArrayVar{Education}{@}
+% {,}{School, Course, Stream, Start, End}
+% {,}{C,D}
+
+
+% % # Add experience item here
+
+
+
+
+% \renewcommand{addEducation}{}
+
+
+% # Add projects here

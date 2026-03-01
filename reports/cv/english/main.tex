@@ -1,0 +1,45 @@
+%-------------------------
+% Resume in Latex - English Version
+% Author : Jake Gutierrez
+% Based off of: https://github.com/sb2nov/resume
+% License : MIT
+%------------------------
+
+% Load common preamble (packages, configuration)
+\input{../common/preamble}
+
+% Set language
+\usepackage[english]{babel}
+
+% Load common commands (must be before utilities)
+\input{../common/commands}
+
+% Load utilities (templates)
+\input{../utilities}
+
+% Load English section titles
+\input{../common/titles-en}
+
+% Load common sections structure
+\input{../common/sections}
+
+% Load personal information and content
+\input{particulars}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\titlesection
+\profileSummary
+
+\describe{College}{Start}
+
+% Render all sections
+\renderEducation
+\renderWorkExperience
+\renderTeachingExperience
+\renderTechStack
+\renderProjects
+
+\end{document}
