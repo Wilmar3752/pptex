@@ -46,6 +46,7 @@ usage() {
     echo "  -e, --engine <engine>        pdflatex | xelatex | lualatex  (default: xelatex)"
     echo "  -b, --biber                  Run biber for bibliography (biblatex)"
     echo "  -o, --output-dir <dir>       Output directory for the PDF"
+    echo "  -r, --root <dir>             Override the auto-detected workspace root"
     echo ""
     echo -e "${BOLD}EXAMPLES${NC}"
     echo "  pptex build"
@@ -120,6 +121,7 @@ cmd_compile() {
     local engine="xelatex"
     local use_biber=false
     local output_dir=""
+    local root_dir=""
     local positional=()
 
     while [[ $# -gt 0 ]]; do
@@ -127,6 +129,7 @@ cmd_compile() {
             -e|--engine)     engine="$2";      shift 2 ;;
             -b|--biber)      use_biber=true;   shift   ;;
             -o|--output-dir) output_dir="$2";  shift 2 ;;
+            -r|--root)       root_dir="$2";    shift 2 ;;
             -*)              error "Unknown option: $1" ;;
             *)               positional+=("$1"); shift  ;;
         esac
@@ -155,18 +158,46 @@ cmd_compile() {
     [[ "$use_biber" == true ]] && biber_label=" + biber"
     info "Compiling ${basename}.tex with ${engine}${biber_label}..."
 
-    local docker_cmd="latexmk ${latexmk_args[*]} '${basename}.tex'"
+    # Determine mount root and working dir inside the container.
+    # If the file lives deeper than one level inside reports/ or slides/,
+    # automatically mount the project root so that ../sibling paths resolve.
+    local mount_dir workdir
+    if [[ -n "$root_dir" ]]; then
+        mount_dir="$(cd "$root_dir" && pwd)"
+    else
+        mount_dir="$src_dir"
+        for base_type in reports slides; do
+            local base_path="${PPTEX_DIR}/${base_type}"
+            if [[ "$src_dir" == "${base_path}/"* ]]; then
+                local rel="${src_dir#${base_path}/}"
+                local project_name="${rel%%/*}"
+                # Nested if rel still contains a slash after stripping the first segment
+                if [[ "$project_name" != "$rel" ]]; then
+                    mount_dir="${base_path}/${project_name}"
+                fi
+                break
+            fi
+        done
+    fi
+    local rel_path="${src_dir#${mount_dir}/}"
+    if [[ "$rel_path" == "$src_dir" ]]; then
+        workdir="/workspace"
+    else
+        workdir="/workspace/${rel_path}"
+    fi
+
+    local docker_cmd="cd '${workdir}' && latexmk ${latexmk_args[*]} '${basename}.tex'"
 
     if [[ "$out_dir" != "$src_dir" ]]; then
         docker run --rm \
-            -v "${src_dir}:/workspace" \
+            -v "${mount_dir}:/workspace" \
             -v "${out_dir}:/out" \
             -w /workspace \
             "${IMAGE_NAME}:${IMAGE_TAG}" \
             bash -c "$docker_cmd"
     else
         docker run --rm \
-            -v "${src_dir}:/workspace" \
+            -v "${mount_dir}:/workspace" \
             -w /workspace \
             "${IMAGE_NAME}:${IMAGE_TAG}" \
             bash -c "$docker_cmd"
@@ -180,12 +211,14 @@ cmd_compile() {
 cmd_watch() {
     local engine="xelatex"
     local use_biber=false
+    local root_dir=""
     local positional=()
 
     while [[ $# -gt 0 ]]; do
         case "$1" in
             -e|--engine)  engine="$2";    shift 2 ;;
             -b|--biber)   use_biber=true; shift   ;;
+            -r|--root)    root_dir="$2";  shift 2 ;;
             -*)           error "Unknown option: $1" ;;
             *)            positional+=("$1"); shift ;;
         esac
@@ -206,11 +239,35 @@ cmd_watch() {
 
     ensure_image
 
+    local mount_dir workdir
+    if [[ -n "$root_dir" ]]; then
+        mount_dir="$(cd "$root_dir" && pwd)"
+    else
+        mount_dir="$src_dir"
+        for base_type in reports slides; do
+            local base_path="${PPTEX_DIR}/${base_type}"
+            if [[ "$src_dir" == "${base_path}/"* ]]; then
+                local rel="${src_dir#${base_path}/}"
+                local project_name="${rel%%/*}"
+                if [[ "$project_name" != "$rel" ]]; then
+                    mount_dir="${base_path}/${project_name}"
+                fi
+                break
+            fi
+        done
+    fi
+    local rel_path="${src_dir#${mount_dir}/}"
+    if [[ "$rel_path" == "$src_dir" ]]; then
+        workdir="/workspace"
+    else
+        workdir="/workspace/${rel_path}"
+    fi
+
     info "Watching ${basename}.tex (press Ctrl+C to stop)..."
 
     docker run --rm -it \
-        -v "${src_dir}:/workspace" \
-        -w /workspace \
+        -v "${mount_dir}:/workspace" \
+        -w "$workdir" \
         "${IMAGE_NAME}:${IMAGE_TAG}" \
         latexmk "${latexmk_args[@]}" "${basename}.tex"
 }
